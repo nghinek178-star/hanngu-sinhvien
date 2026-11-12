@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hán Ngữ Sinh Viên</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap">
+<style>
+/* Layout: tiêu đề + ô luyện chữ (điền tự cách) ở đầu trang, khung chat bên trái, chủ đề và biểu đồ thanh điệu bên phải, bảng 50 câu hỏi ở cuối. */
+:root {
+  --bg: #F1F5F3;
+  --surface: #FFFFFF;
+  --ink: #12272A;
+  --ink-2: #47595C;
+  --line: #D3DEDA;
+  --accent: #17705F;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DDEFEA;
+  --seal: #B8352B;
+  --seal-ink: #FFFFFF;
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-hz: 'Noto Serif SC', 'Songti SC', 'Noto Serif CJK SC', 'SimSun', serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1819; --surface: #142325; --ink: #E7F1ED; --ink-2: #9FB6B1; --line: #25393B;
+    --accent: #4FC3AA; --accent-ink: #06201B; --accent-soft: #17312E; --seal: #C9483C; --seal-ink: #FFFFFF;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1819; --surface: #142325; --ink: #E7F1ED; --ink-2: #9FB6B1; --line: #25393B;
+  --accent: #4FC3AA; --accent-ink: #06201B; --accent-soft: #17312E; --seal: #C9483C; --seal-ink: #FFFFFF;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; }
+.page { max-width: 1120px; margin: 0 auto; padding-block: 16px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.hz { font-family: var(--font-hz); font-weight: 600; color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+/* Đầu trang */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 6px 22px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+.seal { width: 38px; height: 38px; display: grid; place-items: center; background: var(--seal); color: var(--seal-ink); border-radius: 4px; font-family: var(--font-hz); font-weight: 700; font-size: 22px; line-height: 1; }
+.nav { display: flex; gap: 6px 20px; flex-wrap: wrap; font-size: 14px; }
+.nav a { color: var(--ink-2); text-decoration: none; padding: 4px 0; border-bottom: 1px solid transparent; }
+.nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 28px 48px; align-items: center; padding-block: 8px 12px; }
+.hero h1 { margin: 0 0 14px; font-size: clamp(30px, 5.2vw, 48px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 700; text-wrap: balance; }
+.hero p { margin: 0 0 20px; color: var(--ink-2); max-width: 52ch; font-size: 17px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; }
+.btn { display: inline-block; background: var(--accent); color: var(--accent-ink); padding: 12px 20px; border-radius: 8px; font-weight: 600; text-decoration: none; border: 0; }
+.btn:hover { filter: brightness(1.08); }
+.link { color: var(--accent); font-weight: 600; text-decoration: none; border-bottom: 1px solid currentColor; }
+.facts { margin-top: 18px; font-size: 14px; color: var(--ink-2); }
+.cells { display: flex; gap: 10px; }
+.cell { flex: 1 1 0; min-width: 0; max-width: 140px; text-align: center; }
+.tzg { aspect-ratio: 1; max-width: 100%; display: grid; place-items: center; border: 2px solid var(--accent); border-radius: 4px; font-family: var(--font-hz); font-weight: 700; font-size: clamp(44px, 9vw, 78px); line-height: 1; color: var(--ink);
+  background:
+    linear-gradient(var(--line), var(--line)) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(var(--line), var(--line)) 0 50% / 100% 1px no-repeat,
+    var(--surface); }
+.cell-py { margin-top: 8px; font-size: 15px; font-weight: 600; }
+.cell-vi { font-size: 13px; color: var(--ink-2); }
+
+/* Bố cục chính */
+.main { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 30px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.side { display: grid; gap: 24px; min-width: 0; }
+.pad { padding: 18px; }
+h2 { margin: 0; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; text-wrap: balance; }
+.sub { margin: 4px 0 0; font-size: 14px; color: var(--ink-2); }
+
+/* Chat */
+.chat-h { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--font-hz); font-weight: 700; font-size: 18px; flex: none; }
+.chat-h h2 { font-size: 16px; }
+.chat-h .sub { margin: 0; }
+.log { height: clamp(340px, 52vh, 500px); overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
+.msg { max-width: 90%; padding: 10px 14px; border-radius: 12px; overflow-wrap: anywhere; min-width: 0; }
+.msg p { margin: 0 0 8px; }
+.msg p:last-child, .msg ul:last-child { margin-bottom: 0; }
+.msg ul { margin: 0 0 8px; padding-left: 20px; }
+.msg li { margin-bottom: 4px; }
+.bot { align-self: flex-start; background: var(--accent-soft); border-bottom-left-radius: 4px; }
+.user { align-self: flex-end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 4px; }
+.meta { margin-top: 10px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.rel-l { margin: 12px 0 6px; font-size: 13px; color: var(--ink-2); }
+.rels { display: flex; flex-direction: column; gap: 6px; }
+.rel, .chip { text-align: left; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; font-size: 14px; line-height: 1.4; max-width: 100%; }
+.rel:hover, .chip:hover { border-color: var(--accent); color: var(--accent); }
+.dots { display: inline-flex; gap: 4px; padding: 4px 0; }
+.dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-2); opacity: .5; animation: blink 1s infinite ease-in-out; }
+.dots i:nth-child(2) { animation-delay: .15s; }
+.dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.sugg { padding: 0 16px 12px; }
+.sugg-l { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.form { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line); }
+.form input { flex: 1 1 auto; min-width: 0; padding: 11px 12px; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; }
+.form input::placeholder { color: var(--ink-2); }
+.form .btn { padding: 11px 18px; flex: none; }
+
+/* Chủ đề */
+.topics { display: grid; gap: 6px; margin-top: 12px; }
+.topic { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: center; text-align: left; width: 100%; padding: 10px 12px; background: transparent; border: 1px solid var(--line); border-radius: 8px; }
+.topic:hover { border-color: var(--accent); }
+.topic[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.topic b { font-weight: 600; }
+.topic small { grid-column: 1; color: var(--ink-2); font-size: 13px; }
+.topic .n { grid-row: 1 / span 2; grid-column: 2; font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+/* Biểu đồ thanh điệu */
+.tones { width: 100%; height: auto; display: block; margin-top: 8px; }
+.tones .box { fill: none; stroke: var(--line); stroke-width: 1; }
+.tones .gl { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 4; }
+.tones .ct { fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.tones .dot { fill: var(--accent); }
+.tones .py { fill: var(--ink); font-family: var(--font-body); font-size: 15px; font-weight: 700; text-anchor: middle; }
+.tones .mn { fill: var(--ink-2); font-family: var(--font-body); font-size: 12px; text-anchor: middle; }
+.tones .mn .hz { fill: var(--accent); font-size: 14px; }
+
+/* Danh sách 50 câu hỏi */
+.faq { margin-top: 44px; }
+.faq-tools { display: flex; flex-wrap: wrap; gap: 10px 12px; margin: 16px 0 6px; align-items: center; }
+.faq-tools input { flex: 1 1 240px; min-width: 0; padding: 10px 12px; font: inherit; font-size: 16px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tab { background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 14px; color: var(--ink-2); }
+.tab:hover { border-color: var(--accent); color: var(--accent); }
+.tab[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.count { font-size: 14px; color: var(--ink-2); margin: 10px 0 0; }
+.qa { border-bottom: 1px solid var(--line); }
+.qa summary { list-style: none; cursor: pointer; display: flex; gap: 12px; align-items: baseline; justify-content: space-between; padding: 14px 2px; font-weight: 500; }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::after { content: "+"; color: var(--accent); font-weight: 700; font-size: 20px; line-height: 1; flex: none; }
+.qa[open] summary::after { content: "\2212"; }
+.qa .qt { min-width: 0; }
+.qa .tg { display: block; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); font-weight: 400; margin-bottom: 2px; }
+.qa .ans { padding: 0 2px 16px; max-width: 72ch; }
+.qa .ans p { margin: 0 0 8px; }
+.qa .ans ul { margin: 0 0 8px; padding-left: 20px; }
+.qa .ans li { margin-bottom: 4px; }
+.ask { margin-top: 10px; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 6px; padding: 6px 12px; font-size: 14px; font-weight: 600; }
+.ask:hover { background: var(--accent-soft); }
+.empty { padding: 24px 2px; color: var(--ink-2); }
+.foot { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-2); max-width: 80ch; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .cell { max-width: 120px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .log { scroll-behavior: auto; }
+  .dots i { animation: none; opacity: .6; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="brand"><span class="seal" aria-hidden="true">汉</span><span>Hán Ngữ Sinh Viên</span></div>
+    <nav class="nav" aria-label="Điều hướng">
+      <a href="#chat">Hỏi trợ lý</a>
+      <a href="#topics">Chủ đề</a>
+      <a href="#faq">50 câu hỏi</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Học tiếng Trung, hỏi là có đáp</h1>
+      <p>Trợ lý trả lời bằng tiếng Việt cho 50 câu hỏi thường gặp về pinyin, chữ Hán, ngữ pháp, HSK và giao tiếp hằng ngày.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#chat" id="startBtn">Bắt đầu hỏi</a>
+        <a class="link" href="#faq">Xem cả 50 câu hỏi</a>
+      </div>
+      <div class="facts">6 chủ đề · 50 câu hỏi đáp · có sẵn pinyin cho mọi ví dụ</div>
+    </div>
+    <div class="cells" role="img" aria-label="Ba chữ 学汉语, đọc là xué hàn yǔ, nghĩa là học Hán ngữ">
+      <div class="cell"><div class="tzg">学</div><div class="cell-py">xué</div><div class="cell-vi">học</div></div>
+      <div class="cell"><div class="tzg">汉</div><div class="cell-py">hàn</div><div class="cell-vi">Hán</div></div>
+      <div class="cell"><div class="tzg">语</div><div class="cell-py">yǔ</div><div class="cell-vi">ngữ</div></div>
+    </div>
+  </section>
+
+  <div class="main">
+    <section class="card" id="chat" aria-labelledby="chatTitle">
+      <div class="chat-h">
+        <div class="avatar" aria-hidden="true">问</div>
+        <div>
+          <h2 id="chatTitle">Trợ lý Hán ngữ</h2>
+          <p class="sub">Gõ từ khóa hoặc chọn một gợi ý</p>
+        </div>
+      </div>
+      <div class="log" id="log" role="log" aria-live="polite" aria-label="Cuộc trò chuyện"></div>
+      <div class="sugg">
+        <div class="sugg-l" id="suggLabel">Gợi ý</div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <form class="form" id="form" autocomplete="off">
+        <label for="q" style="position:absolute;left:-9999px">Câu hỏi của bạn</label>
+        <input id="q" type="text" placeholder="Ví dụ: thanh điệu, HSK 3, cách dùng 了" enterkeyhint="send">
+        <button class="btn" type="submit">Gửi</button>
+      </form>
+    </section>
+
+    <div class="side">
+      <section class="card pad" id="topics" aria-labelledby="topicsTitle">
+        <h2 id="topicsTitle">Chọn chủ đề</h2>
+        <p class="sub">Chọn một chủ đề để xem câu hỏi gợi ý và lọc bảng bên dưới.</p>
+        <div class="topics" id="topicList"></div>
+      </section>
+
+      <section class="card pad" aria-labelledby="toneTitle">
+        <h2 id="toneTitle">Bốn thanh điệu</h2>
+        <p class="sub">Đường đi của giọng trên thang cao độ từ 1 (thấp) đến 5 (cao).</p>
+        <svg class="tones" viewBox="0 0 340 186" role="img" aria-label="Biểu đồ bốn thanh điệu: thanh 1 bằng và cao, thanh 2 đi lên, thanh 3 xuống rồi lên, thanh 4 rơi từ cao xuống thấp">
+          <g>
+            <rect class="box" x="4" y="8" width="76" height="124"/><line class="gl" x1="4" x2="80" y1="20" y2="20"/><line class="gl" x1="4" x2="80" y1="68" y2="68"/><line class="gl" x1="4" x2="80" y1="116" y2="116"/>
+            <path class="ct" d="M18 20 L66 20"/><circle class="dot" cx="66" cy="20" r="4.5"/>
+            <text class="py" x="42" y="154">mā</text><text class="mn" x="42" y="174"><tspan class="hz">妈</tspan> mẹ</text>
+          </g>
+          <g>
+            <rect class="box" x="88" y="8" width="76" height="124"/><line class="gl" x1="88" x2="164" y1="20" y2="20"/><line class="gl" x1="88" x2="164" y1="68" y2="68"/><line class="gl" x1="88" x2="164" y1="116" y2="116"/>
+            <path class="ct" d="M102 68 L150 20"/><circle class="dot" cx="150" cy="20" r="4.5"/>
+            <text class="py" x="126" y="154">má</text><text class="mn" x="126" y="174"><tspan class="hz">麻</tspan> cây gai</text>
+          </g>
+          <g>
+            <rect class="box" x="172" y="8" width="76" height="124"/><line class="gl" x1="172" x2="248" y1="20" y2="20"/><line class="gl" x1="172" x2="248" y1="68" y2="68"/><line class="gl" x1="172" x2="248" y1="116" y2="116"/>
+            <path class="ct" d="M186 92 L206 116 L234 44"/><circle class="dot" cx="234" cy="44" r="4.5"/>
+            <text class="py" x="210" y="154">mǎ</text><text class="mn" x="210" y="174"><tspan class="hz">马</tspan> ngựa</text>
+          </g>
+          <g>
+            <rect class="box" x="256" y="8" width="76" height="124"/><line class="gl" x1="256" x2="332" y1="20" y2="20"/><line class="gl" x1="256" x2="332" y1="68" y2="68"/><line class="gl" x1="256" x2="332" y1="116" y2="116"/>
+            <path class="ct" d="M270 20 L318 116"/><circle class="dot" cx="318" cy="116" r="4.5"/>
+            <text class="py" x="294" y="154">mà</text><text class="mn" x="294" y="174"><tspan class="hz">骂</tspan> mắng</text>
+          </g>
+        </svg>
+      </section>
+    </div>
+  </div>
+
+  <section class="faq" id="faq" aria-labelledby="faqTitle">
+    <h2 id="faqTitle">Cả 50 câu hỏi và đáp án</h2>
+    <p class="sub">Lọc theo chủ đề hoặc gõ từ khóa để tìm nhanh.</p>
+    <div class="faq-tools">
+      <label for="faqSearch" style="position:absolute;left:-9999px">Tìm câu hỏi</label>
+      <input id="faqSearch" type="search" placeholder="Tìm: pinyin, bộ thủ, 了, HSK...">
+      <div class="tabs" id="tabs" role="group" aria-label="Lọc theo chủ đề"></div>
+    </div>
+    <p class="count" id="faqCount" aria-live="polite"></p>
+    <div id="faqList"></div>
+  </section>
+
+  <p class="foot">Trợ lý hoạt động bằng cách so khớp từ khóa với bộ 50 câu hỏi đáp có sẵn, không gọi máy chủ nào. Nội dung dùng để học và ôn tập; với kỳ thi như HSK, hãy đối chiếu thông báo mới nhất của đơn vị tổ chức.</p>
+</div>
+
+<script>
+(function () {
+'use strict';
+var QA = [{"id": 1, "topic": "pinyin", "q": "Pinyin là gì và vì sao cần học trước?", "a": "**Pinyin (拼音)** là hệ thống phiên âm chữ Hán bằng chữ cái La-tinh, giúp bạn biết cách đọc từng chữ.\n• Một âm tiết gồm thanh mẫu (phụ âm đầu), vận mẫu (phần vần) và thanh điệu.\n• Nên học pinyin đầu tiên vì đó là nền tảng để tra từ điển, gõ chữ Hán trên điện thoại và nghe nói chuẩn.\n• Ví dụ: 你好 đọc là nǐ hǎo.", "kw": ["pinyin", "phiên âm", "bảng chữ cái", "la tinh", "拼音", "học pinyin"]}, {"id": 2, "topic": "pinyin", "q": "Tiếng Trung phổ thông có mấy thanh điệu?", "a": "Có **4 thanh điệu** và 1 thanh nhẹ.\n• Thanh 1 (ˉ): cao và bằng, như mā 妈.\n• Thanh 2 (ˊ): đi lên, như má 麻.\n• Thanh 3 (ˇ): xuống thấp rồi lên, như mǎ 马.\n• Thanh 4 (ˋ): rơi dứt khoát từ cao xuống thấp, như mà 骂.\n• Thanh nhẹ: đọc ngắn và nhẹ, như ma 吗 ở cuối câu hỏi.\nĐổi thanh điệu là đổi nghĩa của từ, nên cần luyện kỹ.", "kw": ["thanh điệu", "mấy thanh", "4 thanh", "bốn thanh", "thanh nhẹ", "tone", "声调", "dấu thanh"]}, {"id": 3, "topic": "pinyin", "q": "Có mẹo nào để nhớ 4 thanh điệu không?", "a": "Dùng bộ bốn âm quen thuộc **mā má mǎ mà** (妈 mẹ, 麻 cây gai, 马 ngựa, 骂 mắng) và đọc to mỗi ngày.\n• Thanh 1: giữ giọng cao và đều, như hát một nốt dài.\n• Thanh 2: lên giọng như khi hỏi ‘hả?’.\n• Thanh 3: hạ thấp xuống rồi nhấc nhẹ lên.\n• Thanh 4: dứt khoát từ cao xuống thấp, như ra lệnh ‘Dừng!’.\nVừa đọc vừa dùng ngón tay vẽ đường đi của giọng trong không khí sẽ giúp nhớ lâu hơn. Biểu đồ bốn thanh điệu có ngay trên trang này.", "kw": ["mẹo nhớ thanh điệu", "mā má mǎ mà", "ma ma ma ma", "luyện thanh điệu", "ví dụ thanh điệu", "妈麻马骂"]}, {"id": 4, "topic": "pinyin", "q": "Biến điệu thanh 3: hai chữ thanh 3 đứng cạnh nhau đọc thế nào (nǐ hǎo)?", "a": "Quy tắc **biến điệu thanh 3**: khi hai thanh 3 đứng liền nhau, chữ đầu đọc thành thanh 2.\n• 你好 viết là nǐ hǎo nhưng đọc là ní hǎo.\n• 很好 viết là hěn hǎo, đọc là hén hǎo.\nTrên giấy vẫn ghi thanh 3, chỉ khi nói mới biến điệu.", "kw": ["biến điệu", "biến điệu thanh 3", "hai thanh 3", "thanh 3 liên tiếp", "thanh ba", "nǐ hǎo"]}, {"id": 5, "topic": "pinyin", "q": "Chữ 不 (bù) biến điệu thế nào?", "a": "不 vốn đọc **bù** (thanh 4). Khi đứng trước một chữ cũng mang thanh 4, nó đọc thành **bú** (thanh 2).\n• 不是 đọc là bú shì.\n• 不对 đọc là bú duì.\n• Trước thanh 1, 2, 3 vẫn đọc bù: 不好 bù hǎo, 不来 bù lái, 不吃 bù chī.\nKhi nói hãy nhớ đổi thanh theo quy tắc này.", "kw": ["不", "bù", "bú shì", "biến điệu"]}, {"id": 6, "topic": "pinyin", "q": "Chữ 一 (yī) biến điệu như thế nào?", "a": "一 đọc **yī** khi đứng một mình hoặc là số thứ tự, như 第一 dì yī.\n• Trước thanh 4 đọc thành **yí**: 一个 yí gè, 一次 yí cì.\n• Trước thanh 1, 2, 3 đọc thành **yì**: 一天 yì tiān, 一年 yì nián, 一起 yì qǐ.", "kw": ["一", "yī", "biến điệu số một", "biến điệu"]}, {"id": 7, "topic": "pinyin", "q": "Thanh mẫu (声母) và vận mẫu (韵母) là gì?", "a": "Một âm tiết pinyin thường gồm 3 phần: **thanh mẫu** (phụ âm đầu), **vận mẫu** (phần vần) và **thanh điệu**.\n• Có 21 thanh mẫu: b p m f d t n l g k h j q x zh ch sh r z c s. Ngoài ra y và w dùng như phụ âm đầu khi viết.\n• Ví dụ: māo 猫 = m (thanh mẫu) + ao (vận mẫu) + thanh 1.\n• Một số âm tiết không có thanh mẫu, như ài 爱.", "kw": ["thanh mẫu", "vận mẫu", "声母", "韵母", "phụ âm đầu", "phụ âm", "nguyên âm", "vần"]}, {"id": 8, "topic": "pinyin", "q": "Phân biệt âm cong lưỡi zh ch sh r với z c s như thế nào?", "a": "• **zh, ch, sh, r** là âm cong lưỡi: cuộn đầu lưỡi lên chạm vòm miệng trên, như zhōng 中, chī 吃, shì 是, rè 热.\n• **z, c, s** là âm đầu lưỡi phẳng: đặt đầu lưỡi sát răng trên, như zài 在, cài 菜, sì 四.\n• Luyện theo cặp đối lập: sì 四 – shì 是, cí 词 – chí 迟.\nGhi âm giọng mình rồi so với bản gốc để nghe ra khác biệt.", "kw": ["zh ch sh", "z c s", "cong lưỡi", "uốn lưỡi", "âm cong lưỡi", "翘舌音", "平舌音", "phân biệt zh z"]}, {"id": 9, "topic": "pinyin", "q": "Làm sao đọc đúng j, q, x?", "a": "j, q, x luôn đi với các vận mẫu bắt đầu bằng i hoặc ü, và đọc bằng phần giữa lưỡi áp lên vòm miệng, môi hơi dẹt.\n• j: gần với âm ‘ch’ của tiếng Việt nhưng không bật hơi: jī 机.\n• q: là bản bật hơi của j: qī 七.\n• x: gần ‘xi’, hơi sát: xī 西.\n• Sau j, q, x chữ ü được viết là u nhưng vẫn đọc ü: jū 居, qù 去, xué 学.", "kw": ["j q x", "jqx", "phát âm j q x", "âm j"]}, {"id": 10, "topic": "pinyin", "q": "Âm bật hơi và không bật hơi khác nhau thế nào?", "a": "Các cặp b–p, d–t, g–k, j–q, z–c, zh–ch khác nhau ở luồng hơi thoát ra.\n• Âm không bật hơi (b, d, g, j, z, zh): đọc nhẹ, gần như không có hơi bật.\n• Âm bật hơi (p, t, k, q, c, ch): phải bật mạnh một luồng hơi ra ngoài.\n• Mẹo: đặt tờ giấy trước miệng. Khi đọc pà 怕 tờ giấy rung, khi đọc bà 爸 thì gần như đứng yên.", "kw": ["bật hơi", "không bật hơi", "b p", "d t", "g k", "送气", "âm bật hơi"]}, {"id": 11, "topic": "hanzi", "q": "Chữ Hán giản thể và phồn thể khác nhau thế nào?", "a": "• **Giản thể (简体字)** được giảm số nét, dùng ở Trung Quốc đại lục và Singapore.\n• **Phồn thể (繁體字)** giữ dạng truyền thống, dùng ở Đài Loan, Hồng Kông, Ma Cao.\n• Ví dụ: 学 (giản thể) và 學 (phồn thể); 马 và 馬.\n• Người mới nên chọn một hệ để học trước. Thi HSK thì học giản thể; thi TOCFL của Đài Loan thường dùng phồn thể.", "kw": ["giản thể", "phồn thể", "简体", "繁體", "繁体", "simplified", "traditional", "chữ giản", "chữ phồn"]}, {"id": 12, "topic": "hanzi", "q": "Bộ thủ là gì và có bao nhiêu bộ?", "a": "**Bộ thủ (部首)** là thành phần dùng để sắp xếp chữ Hán trong từ điển, thường gợi ra nét nghĩa của chữ.\n• Hệ thống truyền thống có **214 bộ** theo từ điển Khang Hy.\n• Khi mới học, chỉ cần nhớ khoảng 30–50 bộ thông dụng như 人 (亻), 水 (氵), 木, 口, 女, 心 (忄), 手 (扌), 言 (讠).\n• Biết bộ thủ giúp đoán nghĩa chữ lạ và tra từ điển nhanh hơn.", "kw": ["bộ thủ", "214 bộ", "khang hy", "khang hi", "部首", "bao nhiêu bộ"]}, {"id": 13, "topic": "hanzi", "q": "Quy tắc thứ tự viết nét chữ Hán là gì?", "a": "Các quy tắc chính:\n• Ngang trước, sổ sau: 十.\n• Phẩy trước, mác sau: 人.\n• Trên trước, dưới sau: 三.\n• Trái trước, phải sau: 休.\n• Ngoài trước, trong sau: 月.\n• Giữa trước, hai bên sau: 小.\n• Vào nhà rồi mới đóng cửa: 国 viết khung ngoài, viết bên trong rồi đóng nét dưới cùng.\nViết đúng thứ tự giúp chữ cân đối và dễ nhớ hơn.", "kw": ["thứ tự nét", "quy tắc viết", "thứ tự viết", "thứ tự", "笔顺", "cách viết"]}, {"id": 14, "topic": "hanzi", "q": "Các nét cơ bản trong chữ Hán gồm những nét nào?", "a": "Các nét cơ bản gồm:\n• 横 héng: nét ngang (一)\n• 竖 shù: nét sổ thẳng (丨)\n• 撇 piě: nét phẩy (丿)\n• 捺 nà: nét mác (乀)\n• 点 diǎn: nét chấm (丶)\n• 提 tí: nét hất lên từ trái sang phải\n• 折 zhé: nét gập, như góc của chữ 口\n• 钩 gōu: nét móc, như ở chữ 小", "kw": ["nét cơ bản", "các nét", "笔画", "nét ngang", "nét sổ", "nét phẩy", "nét mác"]}, {"id": 15, "topic": "hanzi", "q": "Có mẹo nào để nhớ chữ Hán lâu không?", "a": "• Tách chữ thành bộ thủ rồi kể thành một câu chuyện nhỏ: 好 hǎo = 女 (phụ nữ) + 子 (con) = tốt đẹp.\n• Dùng thẻ ghi nhớ và ôn lặp lại ngắt quãng (sau 1 ngày, 3 ngày, 7 ngày...).\n• Viết tay vài lần, vừa viết vừa đọc to pinyin và nghĩa.\n• Học chữ trong từ, đừng học chữ đơn lẻ: 学 trong 学生, 学习, 大学.\n• Liên hệ với âm Hán Việt: 学 = học, 国 = quốc.", "kw": ["mẹo nhớ chữ", "nhớ chữ hán", "cách nhớ chữ", "ghi nhớ chữ", "quên chữ", "nhớ lâu"]}, {"id": 16, "topic": "hanzi", "q": "Chữ hình thanh (形声字) là gì?", "a": "**Chữ hình thanh** chiếm đa số chữ Hán, gồm một phần chỉ nghĩa (thường là bộ thủ) và một phần gợi âm đọc.\n• 妈 mā = 女 (nghĩa: phụ nữ) + 马 mǎ (gợi âm).\n• 河 hé = 氵 (nước) + 可 kě (gợi âm).\n• 清 qīng = 氵 (nước) + 青 qīng (gợi âm).\nPhần gợi âm không phải lúc nào cũng trùng hoàn toàn, nhưng giúp đoán cách đọc.", "kw": ["hình thanh", "形声", "chữ hình thanh", "phần gợi âm", "hài thanh"]}, {"id": 17, "topic": "hanzi", "q": "Một số bộ thủ thông dụng và ý nghĩa của chúng?", "a": "• 亻 (nhân đứng): người, như 你 nǐ, 他 tā, 们 men.\n• 氵 (ba chấm thủy): nước, như 河 hé, 海 hǎi, 汉 hàn.\n• 扌 (tài gảy): hành động bằng tay, như 打 dǎ, 找 zhǎo, 拿 ná.\n• 讠 (ngôn): lời nói, như 说 shuō, 请 qǐng, 谢 xiè.\n• 忄 (tâm đứng): tâm trạng, như 忙 máng, 快 kuài, 怕 pà.\n• 木 (mộc): cây, như 林 lín, 树 shù, 桌 zhuō.", "kw": ["bộ thông dụng", "bộ nhân", "bộ thủy", "bộ mộc", "bộ ngôn", "bộ tâm", "bộ thủ thông dụng", "ý nghĩa bộ"]}, {"id": 18, "topic": "hanzi", "q": "Cần biết bao nhiêu chữ Hán để đọc được báo?", "a": "Khoảng **2.500 đến 3.500 chữ** thông dụng là đủ để đọc phần lớn báo chí và sách phổ thông.\n• Ước chừng 1.000 chữ thông dụng nhất đã bao phủ khoảng 90% văn bản hằng ngày.\n• Chữ càng thông dụng thì xuất hiện càng nhiều, nên hãy học theo tần suất thay vì thứ tự bất kỳ.\n• Biết chữ chưa đủ: bạn cũng cần biết cách ghép chữ thành từ, ví dụ 学 + 生 = 学生 (học sinh).", "kw": ["bao nhiêu chữ hán", "3500 chữ", "2500 chữ", "đọc báo", "số lượng chữ", "chữ thông dụng"]}, {"id": 19, "topic": "hanzi", "q": "Những chữ Hán nào dễ nhầm lẫn?", "a": "Một số cặp thường gặp:\n• 己 jǐ (mình) – 已 yǐ (đã) – 巳 sì (can Tỵ): 己 hở miệng, 已 hở nửa, 巳 kín miệng.\n• 未 wèi (chưa) – 末 mò (cuối): 未 ngang trên ngắn, ngang dưới dài; 末 ngược lại.\n• 日 rì (mặt trời) – 曰 yuē (nói là): 日 hẹp và cao, 曰 rộng và dẹt.\n• 土 tǔ (đất) – 士 shì (học giả): 土 ngang dưới dài hơn, 士 ngang trên dài hơn.\n• 大 dà – 太 tài – 犬 quǎn: khác nhau ở vị trí chấm.\nGặp cặp dễ nhầm, hãy viết hai chữ cạnh nhau và ghi chú điểm khác biệt.", "kw": ["chữ dễ nhầm", "dễ nhầm", "giống nhau", "nhầm lẫn chữ", "己", "已", "未", "末", "土", "士"]}, {"id": 20, "topic": "hanzi", "q": "Có nên luyện viết tay chữ Hán không?", "a": "Có, nhất là giai đoạn đầu.\n• Viết tay giúp nhớ nét, bộ thủ và cấu trúc chữ lâu hơn gõ phím.\n• Dùng vở ô vuông có **điền tự cách (田字格)**: mỗi ô chia thành bốn phần bằng đường ngang và đường dọc giúp căn chữ cân đối.\n• Mỗi chữ viết 5–10 lần đúng thứ tự nét, sau đó tự viết lại không nhìn mẫu.\n• Về lâu dài vẫn nên luyện gõ pinyin vì phần lớn văn bản ngày nay được gõ.", "kw": ["luyện viết", "viết tay", "điền tự cách", "田字格", "vở ô", "tập viết", "viết chữ"]}, {"id": 21, "topic": "nguphap", "q": "Trật tự câu cơ bản trong tiếng Trung là gì?", "a": "Câu cơ bản có trật tự **Chủ ngữ + Động từ + Tân ngữ**, giống tiếng Việt.\n• 我喝茶。Wǒ hē chá. (Tôi uống trà.)\n• 她学汉语。Tā xué Hànyǔ. (Cô ấy học tiếng Hán.)\nKhác tiếng Việt ở chỗ **trạng ngữ thời gian và địa điểm đứng trước động từ**: 我明天去北京。Wǒ míngtiān qù Běijīng. (Ngày mai tôi đi Bắc Kinh.)\nTiếng Trung không chia động từ theo ngôi hay thì, mà dùng trợ từ và từ chỉ thời gian.", "kw": ["trật tự câu", "cấu trúc câu", "chủ ngữ", "tân ngữ", "svo", "cấu trúc cơ bản", "ngữ pháp cơ bản"]}, {"id": 22, "topic": "nguphap", "q": "Cách dùng chữ 是 (shì) như thế nào?", "a": "是 nghĩa là ‘là’, dùng để nối danh từ với danh từ.\n• 我是学生。Wǒ shì xuéshēng. (Tôi là học sinh.)\n• Phủ định đặt 不 trước 是: 他不是老师。Tā bú shì lǎoshī. (Anh ấy không phải giáo viên.)\n• Câu hỏi: 你是越南人吗？Nǐ shì Yuènán rén ma? (Bạn là người Việt Nam à?)\n• Với tính từ không dùng 是 mà dùng 很: nói 我很忙, không nói 我是忙.", "kw": ["是", "động từ là", "chữ shì"]}, {"id": 23, "topic": "nguphap", "q": "Cách dùng 不 và 没 khác nhau thế nào?", "a": "Cả hai đều là từ phủ định nhưng dùng khác nhau.\n• **不 (bù)**: phủ định hiện tại, tương lai, thói quen, ý muốn: 我不去。(Tôi không đi.) 他不喝咖啡。(Anh ấy không uống cà phê.)\n• **没 (méi)**: phủ định hành động đã xảy ra, hoặc ‘không có’: 我没去。(Tôi đã không đi.) 我没有钱。(Tôi không có tiền.)\n• Với 有 chỉ dùng 没 (没有), không nói 不有.\n• Với tính từ thường dùng 不: 不好, 不贵.", "kw": ["不", "没", "没有", "phủ định", "bu mei", "khác nhau bù méi"]}, {"id": 24, "topic": "nguphap", "q": "Cách đặt câu hỏi: dùng 吗, 呢, 吧 và từ để hỏi?", "a": "• **吗 (ma)** thêm cuối câu để thành câu hỏi có/không: 你是学生吗？(Bạn là sinh viên à?)\n• **呢 (ne)** hỏi lại: 我很好，你呢？(Tôi khỏe, còn bạn?)\n• **吧 (ba)** đề nghị hoặc đoán chừng: 我们走吧。(Chúng ta đi thôi.)\n• Từ để hỏi (không cần 吗): 谁 shéi (ai), 什么 shénme (gì), 哪儿 nǎr (đâu), 几 jǐ (mấy), 多少 duōshao (bao nhiêu), 为什么 wèishénme (tại sao).\n• Câu hỏi chính phản (V不V): 你去不去？(Bạn có đi không?)", "kw": ["đặt câu hỏi", "吗", "呢", "吧", "từ để hỏi", "nghi vấn", "什么", "谁"]}, {"id": 25, "topic": "nguphap", "q": "Trợ từ 了 (le) dùng khi nào?", "a": "了 có hai chức năng chính:\n• **Hoàn thành hành động** (đặt sau động từ): 我吃了饭。Wǒ chī le fàn. (Tôi ăn cơm rồi.)\n• **Thay đổi tình huống** (đặt cuối câu): 下雨了。Xià yǔ le. (Mưa rồi.) 我会说汉语了。(Tôi biết nói tiếng Hán rồi.)\nLưu ý: 了 không đơn giản là ‘đã’ hay thì quá khứ. Với hành động lặp lại thường xuyên thì không dùng 了.", "kw": ["了", "trợ từ le", "hoàn thành", "quá khứ"]}, {"id": 26, "topic": "nguphap", "q": "Chữ 的 (de) dùng để làm gì?", "a": "的 nối từ bổ nghĩa với danh từ.\n• Sở hữu: 我的书 wǒ de shū (sách của tôi).\n• Tính từ + 的 + danh từ: 漂亮的衣服 piàoliang de yīfu (bộ quần áo đẹp).\n• Mệnh đề + 的 + danh từ: 我买的书 wǒ mǎi de shū (cuốn sách tôi mua).\n• Có thể bỏ 的 khi nói về quan hệ gần gũi: 我妈妈, 我朋友.", "kw": ["的", "sở hữu", "trợ từ kết cấu", "bổ nghĩa"]}, {"id": 27, "topic": "nguphap", "q": "Lượng từ (量词) là gì và dùng thế nào?", "a": "Khi đếm hoặc dùng từ chỉ định, tiếng Trung cần **lượng từ** đứng giữa số từ và danh từ: số + lượng từ + danh từ.\n• 个 gè: lượng từ phổ biến nhất: 一个人 (một người), 三个苹果 (ba quả táo).\n• 本 běn: sách vở: 两本书.\n• 杯 bēi: ly, cốc: 一杯茶.\n• 张 zhāng: vật phẳng: 一张纸 (một tờ giấy).\n• 只 zhī: động vật nhỏ: 一只猫.\nChưa chắc dùng lượng từ nào thì dùng 个, người nghe thường vẫn hiểu.", "kw": ["lượng từ", "量词", "个", "本", "杯", "张", "classifier", "measure word"]}, {"id": 28, "topic": "nguphap", "q": "Câu chữ 把 (bǎ) dùng khi nào?", "a": "Câu 把 nhấn mạnh việc **xử lý một sự vật xác định** và nêu kết quả của việc đó.\n• Cấu trúc: Chủ ngữ + 把 + tân ngữ + động từ + thành phần khác.\n• 我把作业做完了。Wǒ bǎ zuòyè zuò wán le. (Tôi đã làm xong bài tập.)\n• 请把门关上。Qǐng bǎ mén guān shàng. (Làm ơn đóng cửa lại.)\n• Tân ngữ sau 把 thường phải xác định, và động từ không đứng trơ trọi mà cần kèm kết quả, hướng hoặc 了.", "kw": ["把", "把字句", "câu bǎ"]}, {"id": 29, "topic": "nguphap", "q": "Câu bị động với 被 (bèi) viết thế nào?", "a": "Cấu trúc: **Đối tượng + 被 + (người thực hiện) + động từ + thành phần khác**.\n• 我的手机被偷了。Wǒ de shǒujī bèi tōu le. (Điện thoại của tôi bị trộm mất.)\n• 他被老师批评了。Tā bèi lǎoshī pīpíng le. (Anh ấy bị giáo viên phê bình.)\n• 被 hay dùng cho điều không mong muốn, nhưng cũng dùng cho điều tốt: 她被选为班长了。(Cô ấy được chọn làm lớp trưởng.)\n• Trong văn nói, khi có nêu người thực hiện, còn dùng 让 hoặc 叫 thay cho 被.", "kw": ["被", "bị động", "câu bị động", "被字句"]}, {"id": 30, "topic": "nguphap", "q": "Cách so sánh hơn với 比 (bǐ)?", "a": "Cấu trúc: **A + 比 + B + tính từ**.\n• 他比我高。Tā bǐ wǒ gāo. (Anh ấy cao hơn tôi.)\n• Thêm mức độ: 他比我高一点儿 (cao hơn một chút), 他比我高三厘米 (cao hơn 3 cm).\n• Không dùng 很 hay 非常 sau 比: không nói 他比我很高.\n• So sánh không bằng: A 没有 B + tính từ: 我没有他高。(Tôi không cao bằng anh ấy.)\n• Bằng nhau: A 跟 B 一样 + tính từ: 我跟他一样高。", "kw": ["so sánh", "比", "so sánh hơn", "一样"]}, {"id": 31, "topic": "nguphap", "q": "Bổ ngữ trình độ với 得 (de) dùng thế nào?", "a": "Dùng để đánh giá cách thức, mức độ của hành động: **Động từ + 得 + tính từ**.\n• 她说得很好。Tā shuō de hěn hǎo. (Cô ấy nói rất tốt.)\n• Nếu động từ có tân ngữ, lặp lại động từ: 他说汉语说得很流利。Tā shuō Hànyǔ shuō de hěn liúlì. (Anh ấy nói tiếng Hán rất lưu loát.)\n• Phủ định: 说得不好 (nói không tốt), 不 đặt trước tính từ.\nĐừng nhầm ba chữ cùng đọc là de: 的 (sở hữu), 得 (sau động từ) và 地 (trước động từ, làm trạng ngữ).", "kw": ["得", "bổ ngữ", "bổ ngữ trình độ", "bổ ngữ mức độ", "地", "de de de"]}, {"id": 32, "topic": "nguphap", "q": "Diễn tả hành động đang diễn ra (在, 正在) và kinh nghiệm đã từng (过)?", "a": "• **在 / 正在 + động từ** diễn tả hành động đang diễn ra: 我在看书。Wǒ zài kàn shū. (Tôi đang đọc sách.) 他正在吃饭。(Anh ấy đang ăn cơm.)\n• **Động từ + 过** diễn tả đã từng trải qua: 我去过中国。Wǒ qù guo Zhōngguó. (Tôi đã từng đến Trung Quốc.)\n• Phủ định của 过: 没 + động từ + 过: 我没去过。(Tôi chưa từng đi.)\n• Phủ định của 在: 没在 + động từ: 他没在看书。", "kw": ["正在", "đang", "đã từng", "过", "kinh nghiệm", "tiếp diễn", "在"]}, {"id": 33, "topic": "hsk", "q": "HSK là gì?", "a": "**HSK (汉语水平考试)** là kỳ thi chuẩn đánh giá năng lực tiếng Hán dành cho người nước ngoài, do Trung Quốc tổ chức.\n• Chứng chỉ HSK dùng khi xin học bổng, du học, xin việc ở công ty Trung Quốc.\n• Bài thi gồm các phần nghe, đọc, viết (tùy cấp), có thể thi trên giấy hoặc trên máy tính.\n• Phần thi nói riêng là **HSKK**.\n• Hình thức thi có thể thay đổi, nên hãy xem thông báo mới nhất từ đơn vị tổ chức.", "kw": ["hsk", "汉语水平考试", "kỳ thi hsk", "chứng chỉ hsk", "hsk là gì"]}, {"id": 34, "topic": "hsk", "q": "HSK có mấy cấp độ?", "a": "Hiện có hai cách gọi:\n• **HSK hệ 6 cấp** (quen thuộc nhiều năm): HSK 1 đến HSK 6, từ sơ cấp đến cao cấp.\n• **Chuẩn mới 9 cấp** (中文水平等级标准): chia thành ba bậc sơ, trung, cao với 9 cấp, ban hành từ năm 2021.\nLộ trình áp dụng kỳ thi mới có thể khác nhau theo thời điểm và khu vực. Bạn nên kiểm tra trang chính thức của kỳ thi hoặc trung tâm khảo thí gần nhất trước khi đăng ký.", "kw": ["mấy cấp", "cấp độ hsk", "hsk 1", "hsk 2", "hsk 3", "hsk 4", "hsk 5", "hsk 6", "hsk 9 cấp", "hsk 3 0", "trình độ hsk"]}, {"id": 35, "topic": "hsk", "q": "Mỗi cấp HSK cần bao nhiêu từ vựng?", "a": "Với HSK hệ 6 cấp, số từ vựng tích lũy là:\n• HSK 1: 150 từ\n• HSK 2: 300 từ\n• HSK 3: 600 từ\n• HSK 4: 1.200 từ\n• HSK 5: 2.500 từ\n• HSK 6: 5.000 từ\nChuẩn mới 9 cấp yêu cầu nhiều từ hơn ở mỗi cấp, vì vậy hãy dùng đúng danh sách từ ứng với bài thi bạn chọn.", "kw": ["từ vựng hsk", "bao nhiêu từ", "số từ", "từ vựng mỗi cấp", "150 từ", "600 từ", "1200 từ"]}, {"id": 36, "topic": "hsk", "q": "Lộ trình ôn thi HSK hiệu quả?", "a": "• Xác định cấp độ mục tiêu và ngày thi, rồi chia ngược thời gian ôn theo tuần.\n• Học từ vựng theo danh sách chính thức của cấp đó, mỗi ngày 10–20 từ mới và ôn từ cũ.\n• Luyện nghe mỗi ngày 15–30 phút bằng đề thi cũ.\n• Làm ít nhất 3–5 đề thi thử đúng thời gian trước ngày thi.\n• Ghi lại câu sai và xếp theo loại (từ vựng, ngữ pháp, nghe) để ôn lại.\nHãy xem cấu trúc đề của cấp bạn thi, vì số câu và thời gian khác nhau theo cấp.", "kw": ["ôn thi hsk", "lộ trình hsk", "luyện đề", "đề thi thử", "luyện thi", "mẹo thi hsk", "ôn hsk"]}, {"id": 37, "topic": "hsk", "q": "HSKK và TOCFL là gì?", "a": "• **HSKK (汉语水平口语考试)** là bài thi nói, đánh giá khả năng phát âm và giao tiếp, thường thi cùng HSK.\n• **TOCFL (華語文能力測驗)** là kỳ thi tiếng Hoa do Đài Loan tổ chức, thường dùng chữ phồn thể, phù hợp với người định học hoặc làm việc ở Đài Loan.\nChọn kỳ thi theo mục tiêu: HSK/HSKK cho Trung Quốc đại lục, TOCFL cho Đài Loan.", "kw": ["hskk", "tocfl", "thi nói", "thi khẩu ngữ", "đài loan", "華語"]}, {"id": 38, "topic": "hsk", "q": "Du học Trung Quốc và học bổng cần chuẩn bị gì về tiếng Trung?", "a": "• Nhiều chương trình học bổng, như học bổng chính phủ Trung Quốc (CSC), yêu cầu chứng chỉ HSK ở mức nhất định, tùy chương trình và ngành học.\n• Ngành dạy bằng tiếng Trung thường yêu cầu HSK cao hơn ngành dạy bằng tiếng Anh.\n• Hãy kiểm tra yêu cầu cụ thể và hạn nộp hồ sơ ở trang tuyển sinh của trường hoặc cổng thông tin học bổng chính thức.\n• Nên bắt đầu ôn HSK sớm vì chứng chỉ thường có thời hạn hiệu lực.", "kw": ["học bổng", "du học", "csc", "du học trung quốc", "xin học bổng", "hồ sơ du học"]}, {"id": 39, "topic": "giaotiep", "q": "Các câu chào hỏi và cảm ơn thông dụng?", "a": "• 你好 nǐ hǎo: xin chào\n• 早上好 zǎoshang hǎo: chào buổi sáng\n• 谢谢 xièxie: cảm ơn\n• 不客气 bú kèqi: không có gì\n• 对不起 duìbuqǐ: xin lỗi\n• 没关系 méi guānxi: không sao\n• 再见 zàijiàn: tạm biệt\n• 请 qǐng: xin mời, làm ơn\nKhi chào người lớn tuổi hoặc thầy cô, dùng 您好 nín hǎo để lịch sự hơn.", "kw": ["chào hỏi", "你好", "nihao", "cảm ơn", "谢谢", "tạm biệt", "再见", "xin lỗi", "câu giao tiếp cơ bản", "lời chào"]}, {"id": 40, "topic": "giaotiep", "q": "Cách giới thiệu bản thân bằng tiếng Trung?", "a": "Mẫu câu đơn giản:\n• 你好，我叫阮明。Nǐ hǎo, wǒ jiào Ruǎn Míng. (Xin chào, tôi tên là Nguyễn Minh.)\n• 我是越南人。Wǒ shì Yuènán rén. (Tôi là người Việt Nam.)\n• 我是大学生。Wǒ shì dàxuéshēng. (Tôi là sinh viên đại học.)\n• 我今年二十岁。Wǒ jīnnián èrshí suì. (Năm nay tôi 20 tuổi.)\n• 我在学汉语。Wǒ zài xué Hànyǔ. (Tôi đang học tiếng Hán.)\n• 很高兴认识你。Hěn gāoxìng rènshi nǐ. (Rất vui được làm quen với bạn.)", "kw": ["giới thiệu bản thân", "giới thiệu", "tự giới thiệu", "我叫", "tên tôi", "làm quen"]}, {"id": 41, "topic": "giaotiep", "q": "Cách đếm số từ 1 đến 10 và hơn thế nữa?", "a": "• 1 一 yī, 2 二 èr, 3 三 sān, 4 四 sì, 5 五 wǔ\n• 6 六 liù, 7 七 qī, 8 八 bā, 9 九 jiǔ, 10 十 shí\n• Từ 11 đến 19: 十 + số: 十一 shíyī (11), 十五 shíwǔ (15).\n• Hàng chục: 二十 èrshí (20), 三十五 sānshíwǔ (35).\n• 100 là 一百 yībǎi, 1000 là 一千 yīqiān, 10.000 là 一万 yīwàn.\n• Khi nói số lượng 2 trước lượng từ, dùng 两 liǎng: 两个人 (hai người).", "kw": ["số đếm", "đếm số", "các số", "1 đến 10", "一二三", "số từ", "số 1 đến 10", "đếm từ 1 đến 10"]}, {"id": 42, "topic": "giaotiep", "q": "Cách nói giờ, ngày và thứ trong tuần?", "a": "• Hỏi giờ: 现在几点？Xiànzài jǐ diǎn? Đáp: 现在三点十分。(Bây giờ là 3 giờ 10 phút.)\n• 半 bàn: rưỡi (三点半 = 3 giờ rưỡi); 一刻 yí kè: 15 phút.\n• Thứ trong tuần: 星期一 xīngqī yī (thứ hai), 星期二 (thứ ba)... 星期天 xīngqītiān hoặc 星期日 (chủ nhật).\n• Ngày tháng: 年 nián (năm), 月 yuè (tháng), 号 hào hoặc 日 rì (ngày): 2026年11月9号.\n• Thứ tự nói: năm, tháng, ngày rồi mới đến thứ.", "kw": ["hỏi giờ", "thứ trong tuần", "ngày tháng", "星期", "几点", "mấy giờ", "nói giờ", "giờ"]}, {"id": 43, "topic": "giaotiep", "q": "Cách hỏi giá và mặc cả khi mua sắm?", "a": "• 这个多少钱？Zhège duōshao qián? (Cái này bao nhiêu tiền?)\n• 太贵了！Tài guì le! (Đắt quá!)\n• 便宜一点儿吧。Piányi yìdiǎnr ba. (Rẻ hơn một chút đi.)\n• 可以打折吗？Kěyǐ dǎzhé ma? (Có giảm giá được không?)\n• 我要这个。Wǒ yào zhège. (Tôi lấy cái này.)\n• 块 kuài hoặc 元 yuán là đơn vị tiền (nhân dân tệ): 十块 shí kuài là 10 tệ.", "kw": ["hỏi giá", "mua sắm", "mặc cả", "多少钱", "bao nhiêu tiền", "giảm giá", "tiền tệ", "đắt"]}, {"id": 44, "topic": "giaotiep", "q": "Cách gọi món và thanh toán ở nhà hàng?", "a": "• 请给我菜单。Qǐng gěi wǒ càidān. (Cho tôi xem thực đơn.)\n• 我要一碗牛肉面。Wǒ yào yì wǎn niúròu miàn. (Tôi muốn một tô mì bò.)\n• 不要辣。Bú yào là. (Đừng cho cay.)\n• 有没有素食？Yǒu méiyǒu sùshí? (Có món chay không?)\n• 请再来一杯水。Qǐng zài lái yì bēi shuǐ. (Cho thêm một ly nước.)\n• 买单。Mǎidān. (Tính tiền.)\n• 服务员 fúwùyuán: người phục vụ, dùng khi muốn gọi nhân viên.", "kw": ["gọi món", "nhà hàng", "thực đơn", "菜单", "买单", "ăn uống", "gọi đồ ăn"]}, {"id": 45, "topic": "giaotiep", "q": "Từ Hán Việt giúp học tiếng Trung dễ hơn như thế nào?", "a": "Tiếng Việt có rất nhiều từ gốc Hán, nên bạn có lợi thế khi học từ vựng.\n• 学生 xuéshēng ↔ học sinh; 大学 dàxué ↔ đại học; 国家 guójiā ↔ quốc gia; 手机 shǒujī ↔ thủ cơ (điện thoại di động).\n• Có thể đoán nghĩa và nhớ chữ nhờ âm Hán Việt: 经济 jīngjì ↔ kinh tế.\n• Lưu ý: cách đọc pinyin khác âm Hán Việt, và một số từ khác nghĩa, như 爱人 àiren (vợ hoặc chồng, ở Trung Quốc đại lục) hay 小心 xiǎoxīn (cẩn thận).", "kw": ["hán việt", "từ hán việt", "âm hán việt", "gốc hán", "đoán nghĩa", "từ vay mượn"]}, {"id": 46, "topic": "phuongphap", "q": "Người mới bắt đầu nên học tiếng Trung từ đâu?", "a": "Lộ trình gợi ý cho người mới:\n• Giai đoạn 1: pinyin, thanh điệu và các nét cơ bản (khoảng 2–4 tuần).\n• Giai đoạn 2: 150–300 từ và chữ thông dụng, câu giao tiếp hằng ngày (tương đương HSK 1–2).\n• Giai đoạn 3: ngữ pháp nền tảng (是, 不/没, 了, 吗, lượng từ) và đoạn hội thoại ngắn.\n• Giai đoạn 4: luyện nghe, đọc đoạn văn ngắn, chọn kỳ thi HSK phù hợp.\nHọc đều mỗi ngày 30–45 phút hiệu quả hơn học dồn một buổi dài.", "kw": ["bắt đầu", "người mới", "từ đâu", "lộ trình học", "học từ đầu", "mới học", "lộ trình", "nhập môn"]}, {"id": 47, "topic": "phuongphap", "q": "Cách học từ vựng hiệu quả bằng flashcard?", "a": "• Làm thẻ có chữ Hán ở mặt trước; pinyin, nghĩa và câu ví dụ ở mặt sau.\n• Ôn theo **lặp lại ngắt quãng**: thẻ nhớ tốt thì ôn thưa dần, thẻ quên thì ôn lại sớm. Ứng dụng như Anki hỗ trợ việc này.\n• Học theo cụm và câu ví dụ thay vì từ đơn.\n• Phân nhóm từ theo chủ đề (gia đình, ăn uống, trường học) để dễ liên tưởng.\n• Mỗi ngày học 10–20 từ mới và ôn tất cả từ đến hạn.", "kw": ["học từ vựng", "từ vựng", "flashcard", "anki", "thẻ ghi nhớ", "lặp lại ngắt quãng", "spaced repetition", "học từ mới"]}, {"id": 48, "topic": "phuongphap", "q": "Cách luyện nghe tiếng Trung hiệu quả?", "a": "• Bắt đầu với bài nghe chậm, có pinyin hoặc phụ đề, rồi giảm dần phụ đề.\n• Nghe nhiều lần: lần 1 nghe ý chính, lần 2 nghe chi tiết, lần 3 xem văn bản.\n• **Shadowing**: nghe một câu rồi nhại lại ngay, bắt chước cả ngữ điệu.\n• Nghe đều mỗi ngày nhưng ngắn (15–30 phút) qua phim, podcast, bài hát.\n• Chép chính tả một số câu để rèn tai với thanh điệu.", "kw": ["luyện nghe", "nghe", "shadowing", "podcast", "xem phim", "nghe hiểu", "kỹ năng nghe"]}, {"id": 49, "topic": "phuongphap", "q": "Làm sao luyện nói tiếng Trung khi không có người bản xứ?", "a": "• Tự nói to các mẫu câu và ghi âm lại để so sánh với bản gốc.\n• Tìm bạn học cùng để luyện hội thoại, hoặc tham gia câu lạc bộ tiếng Trung ở trường.\n• Dùng ứng dụng trao đổi ngôn ngữ để trò chuyện với người bản xứ.\n• Tự mô tả những việc bạn đang làm trong ngày bằng tiếng Trung.\n• Chú ý thanh điệu và ngữ điệu hơn là tốc độ.", "kw": ["luyện nói", "nói", "giao tiếp", "khẩu ngữ", "hội thoại", "câu lạc bộ", "nói chuyện", "phát âm tự nhiên"]}, {"id": 50, "topic": "phuongphap", "q": "Nên dùng từ điển và công cụ nào để học tiếng Trung?", "a": "• **Pleco**: từ điển Hán–Anh phổ biến, có tra theo bộ thủ và nhận dạng chữ viết tay.\n• **Anki**: thẻ ghi nhớ lặp lại ngắt quãng.\n• Bàn phím pinyin trên điện thoại và máy tính: gõ pinyin rồi chọn chữ Hán.\n• Công cụ nhận dạng chữ viết tay để tra chữ chưa biết cách đọc.\n• Từ điển Hán–Việt và giáo trình chính thức, như bộ Giáo trình Hán ngữ, để học có hệ thống.\nChọn ít công cụ nhưng dùng đều đặn.", "kw": ["từ điển", "công cụ", "pleco", "ứng dụng", "app", "bàn phím", "gõ chữ hán", "gõ pinyin", "tra từ", "giáo trình"]}];
+var TOPICS = [
+  { id: 'pinyin', name: 'Phát âm & Pinyin', hint: 'Thanh điệu, thanh mẫu, biến điệu' },
+  { id: 'hanzi', name: 'Chữ Hán & bộ thủ', hint: 'Nét, bộ thủ, giản thể và phồn thể' },
+  { id: 'nguphap', name: 'Ngữ pháp', hint: '是, 了, 的, 把, 被, 比' },
+  { id: 'hsk', name: 'HSK & thi cử', hint: 'Cấp độ, từ vựng, học bổng' },
+  { id: 'giaotiep', name: 'Từ vựng & giao tiếp', hint: 'Chào hỏi, số đếm, mua sắm' },
+  { id: 'phuongphap', name: 'Phương pháp học', hint: 'Lộ trình, nghe, nói, công cụ' }
+];
+var TOPIC_NAME = {};
+TOPICS.forEach(function (t) { TOPIC_NAME[t.id] = t.name; });
+
+//<core>
+var STOP = new Set(['nhu','the','nao','cach','cho','cua','nhung','khi','voi','mot','cac','khong','nen','can','bao','nhieu','lam','sao','dung','nay','hay','duoc','tieng','trung','hoc','gom','giong','khac','nhau','dang']);
+var HAN = /[㐀-鿿]/;
+function norm(s) {
+  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9㐀-鿿]+/g, ' ').trim();
+}
+function kwWeight(s, han) {
+  if (han) return Math.min(9, 3 * s.replace(/\s/g, '').length);
+  return Math.max(3, Math.min(s.length, 16) / 2) + 0.5 * (s.split(' ').length - 1);
+}
+function tokens(n) {
+  return n.split(' ').filter(function (t) { return t.length >= 3 && !STOP.has(t); });
+}
+QA.forEach(function (e) {
+  e.qn = norm(e.q);
+  e.qt = new Set(tokens(e.qn));
+  e.k = e.kw.map(norm).filter(Boolean).map(function (s) {
+    var han = HAN.test(s);
+    return { s: s, han: han, w: kwWeight(s, han) };
+  });
+});
+function search(text) {
+  var n = norm(text);
+  var padded = ' ' + n + ' ';
+  var toks = new Set(tokens(n));
+  return QA.map(function (e) {
+    var sc = 0;
+    if (n === e.qn) sc += 100;
+    e.k.forEach(function (k) {
+      var ok = k.han ? n.indexOf(k.s) !== -1 : padded.indexOf(' ' + k.s + (k.s.length <= 3 ? ' ' : '')) !== -1;
+      if (ok) sc += k.w;
+    });
+    e.qt.forEach(function (t) { if (toks.has(t)) sc += 0.6; });
+    return { e: e, sc: sc };
+  }).sort(function (a, b) { return b.sc - a.sc || a.e.id - b.e.id; });
+}
+//</core>
+
+var GREET = new Set(['xin chao','chao','chao ban','hello','hi','hey','alo','nihao','ni hao','你好','chao tro ly','xin chao ban']);
+var THANKS = new Set(['cam on','cam on ban','cam on nhieu','thanks','thank you','谢谢','xie xie','xiexie']);
+var THRESHOLD = 3;
+
+function byId(id) { for (var i = 0; i < QA.length; i++) if (QA[i].id === id) return QA[i]; return null; }
+function esc(s) { return s.replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function fmt(t) {
+  var html = '', list = false;
+  t.split('\n').forEach(function (ln) {
+    var li = ln.indexOf('• ') === 0;
+    var body = esc(li ? ln.slice(2) : ln)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/([　-〿㐀-䶿一-鿿＀-￯]+)/g, '<span class="hz" lang="zh-Hans">$1</span>');
+    if (li) { if (!list) { html += '<ul>'; list = true; } html += '<li>' + body + '</li>'; }
+    else { if (list) { html += '</ul>'; list = false; } if (ln.trim()) html += '<p>' + body + '</p>'; }
+  });
+  if (list) html += '</ul>';
+  return html;
+}
+
+var log = document.getElementById('log');
+var form = document.getElementById('form');
+var input = document.getElementById('q');
+var chipsEl = document.getElementById('chips');
+var suggLabel = document.getElementById('suggLabel');
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function scrollLog() { log.scrollTop = log.scrollHeight; }
+function addMsg(cls, html) {
+  var d = document.createElement('div');
+  d.className = 'msg ' + cls;
+  d.innerHTML = html;
+  log.appendChild(d);
+  scrollLog();
+  return d;
+}
+function relHtml(list) {
+  if (!list.length) return '';
+  return '<div class="rel-l">Bạn có thể hỏi tiếp:</div><div class="rels">' +
+    list.map(function (e) { return '<button type="button" class="rel" data-id="' + e.id + '">' + esc(e.q) + '</button>'; }).join('') + '</div>';
+}
+function related(best, res) {
+  var out = [];
+  res.forEach(function (r) { if (out.length < 3 && r.e !== best && r.sc > 0) out.push(r.e); });
+  if (out.length < 3) {
+    var start = QA.indexOf(best);
+    for (var i = 1; i < QA.length && out.length < 3; i++) {
+      var e = QA[(start + i) % QA.length];
+      if (e.topic === best.topic && out.indexOf(e) === -1) out.push(e);
+    }
+  }
+  return out;
+}
+function respond(text) {
+  var n = norm(text);
+  if (GREET.has(n)) {
+    addMsg('bot', '<p>Xin chào! 你好 <span class="hz">nǐ hǎo</span> nghĩa là xin chào. Bạn muốn hỏi gì về tiếng Trung? Hãy thử một từ khóa như ‘thanh điệu’, ‘bộ thủ’ hay ‘HSK’.</p>');
+    return;
+  }
+  if (THANKS.has(n)) {
+    addMsg('bot', '<p>Không có gì! Tiếng Trung nói là 不客气 bú kèqi. Chúc bạn học vui và đều đặn nhé.</p>');
+    return;
+  }
+  var res = search(text);
+  var best = res[0];
+  if (best.sc >= THRESHOLD) {
+    var e = best.e;
+    addMsg('bot', fmt(e.a) + '<div class="meta">' + esc(TOPIC_NAME[e.topic]) + '</div>' + relHtml(related(e, res)));
+  } else {
+    var sug = res.filter(function (r) { return r.sc > 0; }).slice(0, 3).map(function (r) { return r.e; });
+    if (!sug.length) sug = [byId(1), byId(2), byId(46)];
+    addMsg('bot', '<p>Mình chưa tìm thấy câu trả lời khớp với ‘' + esc(text) + '’. Bạn thử gõ từ khóa ngắn hơn như pinyin, thanh điệu, bộ thủ, ngữ pháp, HSK, từ vựng, hoặc chọn một câu bên dưới.</p>' + relHtml(sug));
+  }
+}
+function ask(text) {
+  text = text.trim();
+  if (!text) return;
+  addMsg('user', esc(text));
+  input.value = '';
+  var typing = addMsg('bot', '<span class="dots" aria-label="Đang trả lời"><i></i><i></i><i></i></span>');
+  setTimeout(function () { typing.remove(); respond(text); scrollLog(); }, reduce ? 0 : 380);
+}
+
+function setChips(list, label) {
+  suggLabel.textContent = label;
+  chipsEl.innerHTML = list.map(function (e) { return '<button type="button" class="chip" data-id="' + e.id + '">' + esc(e.q) + '</button>'; }).join('');
+}
+function defaultChips() { setChips([1, 2, 24, 33, 46, 39].map(byId), 'Gợi ý'); }
+
+form.addEventListener('submit', function (ev) { ev.preventDefault(); ask(input.value); });
+log.addEventListener('click', function (ev) { var b = ev.target.closest('.rel'); if (b) ask(byId(+b.getAttribute('data-id')).q); });
+chipsEl.addEventListener('click', function (ev) { var b = ev.target.closest('.chip'); if (b) ask(byId(+b.getAttribute('data-id')).q); });
+
+/* Chủ đề + danh sách câu hỏi */
+var topicList = document.getElementById('topicList');
+var tabs = document.getElementById('tabs');
+var faqList = document.getElementById('faqList');
+var faqCount = document.getElementById('faqCount');
+var faqSearch = document.getElementById('faqSearch');
+var currentTopic = 'all';
+
+function countOf(id) { return QA.filter(function (e) { return e.topic === id; }).length; }
+topicList.innerHTML = TOPICS.map(function (t) {
+  return '<button type="button" class="topic" data-t="' + t.id + '" aria-pressed="false"><b>' + esc(t.name) + '</b><span class="n">' + countOf(t.id) + ' câu</span><small>' + esc(t.hint) + '</small></button>';
+}).join('');
+tabs.innerHTML = '<button type="button" class="tab" data-t="all" aria-pressed="true">Tất cả</button>' + TOPICS.map(function (t) {
+  return '<button type="button" class="tab" data-t="' + t.id + '" aria-pressed="false">' + esc(t.name) + '</button>';
+}).join('');
+
+function setTopic(id) {
+  currentTopic = id;
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-t') === id)); });
+  Array.prototype.forEach.call(document.querySelectorAll('.topic'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-t') === id)); });
+  renderFaq();
+}
+function renderFaq() {
+  var qn = norm(faqSearch.value);
+  var list = QA.filter(function (e) {
+    if (currentTopic !== 'all' && e.topic !== currentTopic) return false;
+    return !qn || norm(e.q + ' ' + e.kw.join(' ')).indexOf(qn) !== -1;
+  });
+  faqCount.textContent = 'Hiển thị ' + list.length + ' trên ' + QA.length + ' câu hỏi';
+  if (!list.length) { faqList.innerHTML = '<p class="empty">Không có câu hỏi nào khớp. Thử bỏ bớt từ khóa hoặc chọn ‘Tất cả’.</p>'; return; }
+  faqList.innerHTML = list.map(function (e) {
+    return '<details class="qa"><summary><span class="qt"><span class="tg">' + esc(TOPIC_NAME[e.topic]) + '</span>' + esc(e.q) + '</span></summary><div class="ans">' + fmt(e.a) +
+      '<button type="button" class="ask" data-id="' + e.id + '">Hỏi trợ lý câu này</button></div></details>';
+  }).join('');
+}
+topicList.addEventListener('click', function (ev) {
+  var b = ev.target.closest('.topic'); if (!b) return;
+  var id = b.getAttribute('data-t');
+  setTopic(id);
+  var qs = QA.filter(function (e) { return e.topic === id; }).slice(0, 6);
+  setChips(qs, TOPIC_NAME[id]);
+});
+tabs.addEventListener('click', function (ev) {
+  var b = ev.target.closest('.tab'); if (!b) return;
+  var id = b.getAttribute('data-t');
+  setTopic(id);
+  if (id === 'all') defaultChips();
+});
+faqSearch.addEventListener('input', renderFaq);
+faqList.addEventListener('click', function (ev) {
+  var b = ev.target.closest('.ask'); if (!b) return;
+  document.getElementById('chat').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  ask(byId(+b.getAttribute('data-id')).q);
+});
+
+addMsg('bot', '<p>Xin chào! Mình trả lời các câu hỏi thường gặp về tiếng Trung bằng tiếng Việt, từ pinyin và chữ Hán đến ngữ pháp, HSK và giao tiếp.</p><p>Hãy gõ một từ khóa như ‘thanh điệu’, ‘HSK 3’ hay ‘cách dùng 了’, hoặc chọn một gợi ý bên dưới.</p>');
+defaultChips();
+renderFaq();
+})();
+</script>
+</body>
+</html>
